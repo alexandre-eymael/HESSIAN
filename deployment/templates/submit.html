@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HESSIAN 🌲</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        #preview {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            display: none; /* Initially hide the image preview */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>HESSIAN 🌲</h2>
+        <form enctype="multipart/form-data" id="leafDiagnosisForm" action="/result" method="POST">
+            <p class="lead">Enter your API key:</p>
+            <input type="text" class="form-control mb-3" id="api_key" placeholder="API Key" name="api_key">
+    
+            <p class="lead">Update the image of the leaf you want to diagnose:</p>
+            
+            <div class="upload-btn-wrapper mb-3">
+                <button class="btn btn-outline-secondary" type="button">Upload Image</button>
+                <input type="file" name="query" id="fileUpload" accept="image/*">
+            </div>
+    
+            <div>
+                <img id="preview" src="" alt="Image preview..." class="img-thumbnail">
+            </div>
+    
+            <p class="lead">Choose the size of the model you want to use:</p>
+    
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="model_size" id="small" autocomplete="off" checked value="small">Small
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="model_size" id="medium" autocomplete="off" value="medium"> Medium
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="model_size" id="large" autocomplete="off" value="large"> Large
+                </label>
+            </div>
+    
+            <div class="mb-3">
+                <br>
+                <button class="btn btn-primary mt-3" id="submitBtn" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+<!-- Include Bootstrap JS and its dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    document.getElementById('fileUpload').addEventListener('change', function(event) {
+        if (event.target.files.length > 0) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block'; // Show the image preview
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+</script>
+
+</body>
+</html>
