@@ -1,0 +1,15 @@
+python3 models/train.py \
+--model_size small \
+--save_path /home/badei/Projects/HESSIAN/weights \
+--save_freq 5 \
+--data_path /home/badei/Projects/HESSIAN/data/images \
+--epochs 1000 \
+--lr 1e-3 \
+--train_prop 0.8 \
+--device cpu \
+--img_size 224 \
+--batch_size 128 \
+--max_samples 654084404 \
+--wandb_mode online \
+--optimizer AdamW \
+--seed 42
