@@ -10,6 +10,7 @@
 #SBATCH --gres=gpu:0             # Number of GPU's
 #SBATCH --time="1-00:00:00"      # Max execution time
 
+cd ~/HESSIAN
 mamba activate hessian
 
 python3 models/train.py \
