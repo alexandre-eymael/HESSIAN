@@ -7,7 +7,7 @@
 #SBATCH --output "hessian.log"   # Log-file (important!)
 #SBATCH --cpus-per-task=4        # Number of CPU cores to allocate
 #SBATCH --mem-per-cpu=4000       # Memory to allocate in MB per allocated CPU core
-#SBATCH --gres=gpu:0             # Number of GPU's
+#SBATCH --gres=gpu:1             # Number of GPU's
 #SBATCH --time="1-00:00:00"      # Max execution time
 
 cd ~/HESSIAN
