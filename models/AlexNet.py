@@ -46,7 +46,6 @@ class AlexNet(nn.Module):
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
     
     def save_model(self, epoch, optimizer, loss, path):
-        # save the model as a checkpoint in case we want to continue training, we need to save the optimizer as well
         torch.save({
             'epoch': epoch,
             'model_state_dict': self.state_dict(),
@@ -55,29 +54,31 @@ class AlexNet(nn.Module):
         }, path)
         
     def load_model(self, path):
-        # load the model from a checkpoint
         checkpoint = torch.load(path)
         self.load_state_dict(checkpoint['model_state_dict'])
         return checkpoint['epoch'], checkpoint['optimizer_state_dict'], checkpoint['loss']
 
 def AlexNet_small(num_classes):
+    # 134,709 parameters
     return AlexNet(
         features=[(3, 4, 11, 4, 2), (4, 8, 5, 1, 2)],
-        classifier=[8 * 6 * 6, 64, num_classes],
+        classifier=[8 * 6 * 6, 128, 64, num_classes],
         dropout=0.1
     )
 
 def AlexNet_base(num_classes):
+    # 526,957 parameters
     return AlexNet(
-        features=[(3, 16, 11, 4, 2), (16, 32, 5, 1, 2), (32, 64, 3, 1, 1)],
-        classifier=[64 * 6 * 6, 128, 128, num_classes],
+        features=[(3, 8, 11, 4, 2), (8, 16, 5, 1, 2)],
+        classifier=[16 * 6 * 6, 256, 128, num_classes],
         dropout=0.1
     )
 
 def AlexNet_large(num_classes):
+    # 2,076,365 parameters
     return AlexNet(
-        features=[(3, 64, 11, 4, 2), (64, 192, 5, 1, 2), (192, 384, 3, 1, 1)],
-        classifier=[384 * 6 * 6, 2048, 2048, num_classes],
+        features=[(3, 8, 11, 4, 2), (8, 16, 5, 1, 2), (16, 32, 3, 1, 1)],
+        classifier=[32 * 6 * 6, 512, 256, num_classes],
         dropout=0.2
     )
 
@@ -97,12 +98,12 @@ if __name__ == '__main__':
     
     # SMALL MODEL 
     small_model = AlexNet_small(num_classes)
-    print('Number of parameters Small:', small_model.get_nb_params())
+    print('Number of parameters Small:', small_model.n_params)
     
     # BASE MODEL
     base_model = AlexNet_base(num_classes)
-    print('Number of parameters Base:', base_model.get_nb_params())
+    print('Number of parameters Base:', base_model.n_params)
     
     # LARGE MODEL
     large_model = AlexNet_large(num_classes)
-    print('Number of parameters Large:', large_model.get_nb_params())
+    print('Number of parameters Large:', large_model.n_params)
