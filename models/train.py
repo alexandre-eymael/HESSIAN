@@ -50,6 +50,8 @@ def train(model, train_loader, test_loader, optimizer, criterion,
                 
                 # get the healthy accuracy
                 healthy_classes_tensor = torch.tensor(HEALTHY_CLASSES)
+                labels = labels.cpu()
+                output = output.cpu()
                 healthy_labels_mask = (labels.unsqueeze(1) == healthy_classes_tensor).any(dim=1)
                 healthy_output_mask = (output.argmax(1).unsqueeze(1) == healthy_classes_tensor).any(dim=1)
                 correct_preds = (healthy_labels_mask == healthy_output_mask).sum().item()
