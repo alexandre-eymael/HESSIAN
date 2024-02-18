@@ -24,6 +24,7 @@ def get_args_parser():
     parser.add_argument("--max_samples", type=int, default=None, help="Maximum number of samples to use")
     parser.add_argument("--seed", type=int, default=42, help="Seed for the random number generator")
     parser.add_argument("--device", type=str, default="cuda", help="Device to use to train the model")
+    parser.add_argument("--load_all_in_ram", type=bool, default=False, help="Load all the data in RAM")
 
     # Misc
     parser.add_argument("--wandb_mode", type=str, default="online", choices=["disabled", "online", "offline"], help="Wandb mode")

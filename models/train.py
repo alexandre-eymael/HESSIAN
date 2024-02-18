@@ -109,7 +109,7 @@ if __name__ == '__main__':
         transforms.Normalize(mean=[0.4557, 0.4969, 0.3778], std=[0.1991, 0.1820, 0.2096]),
     ])
 
-    dataset = LeafDataset(args.data_path, transform=transform, load_all_in_memory=False, max_samples=args.max_samples)
+    dataset = LeafDataset(args.data_path, transform=transform, load_all_in_memory=args.load_all_in_ram, max_samples=args.max_samples)
     num_classes = dataset.get_nb_classes()
     train_loader, test_loader = get_dataloader(dataset, args.batch_size, args.train_prop)
 

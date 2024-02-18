@@ -6,7 +6,7 @@
 #SBATCH --export=ALL             # Export all environment variables
 #SBATCH --output "hessian.log"   # Log-file (important!)
 #SBATCH --cpus-per-task=4        # Number of CPU cores to allocate
-#SBATCH --mem-per-cpu=4000       # Memory to allocate in MB per allocated CPU core
+#SBATCH --mem-per-cpu=30GB       # Memory to allocate in MB per allocated CPU core
 #SBATCH --gres=gpu:1             # Number of GPU's
 #SBATCH --time="1-00:00:00"      # Max execution time
 
@@ -17,7 +17,7 @@ python3 models/train.py \
 --model_size small \
 --save_path /home/aeymael/HESSIAN/weights \
 --save_freq 5 \
---data_path /scratch/users/aeymael/PlantDiseaseDataset \
+--data_path /home/aeymael/PlantDiseaseDataset \
 --epochs 1000 \
 --lr 3e-4 \
 --train_prop 0.8 \
@@ -27,4 +27,5 @@ python3 models/train.py \
 --max_samples 654084404 \
 --wandb_mode online \
 --optimizer AdamW \
---seed 42
+--seed 42 \
+----load_all_in_ram True \
