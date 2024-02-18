@@ -28,4 +28,4 @@ python3 models/train.py \
 --wandb_mode online \
 --optimizer AdamW \
 --seed 42 \
-----load_all_in_ram True \
+--load_all_in_ram True \
