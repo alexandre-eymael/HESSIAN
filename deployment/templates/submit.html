@@ -57,17 +57,13 @@
             </div>
     
             <p class="lead">Choose the size of the model you want to use:</p>
-    
+
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary active">
-                  <input type="radio" name="model_size" id="small" autocomplete="off" checked value="small">Small
+                {% for model_id, model_name in models.items() %}
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="model_type" id="{{ model_id }}" value="{{ model_id }}" autocomplete="off"> {{ model_name }}
                 </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="model_size" id="medium" autocomplete="off" value="medium"> Medium
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="model_size" id="large" autocomplete="off" value="large"> Large
-                </label>
+                {% endfor %}
             </div>
     
             <div class="mb-3">
