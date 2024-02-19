@@ -1,4 +1,4 @@
-from AlexNet import create_AlexNet
+from .AlexNet import create_AlexNet
 import torch
 from PIL import Image
 from torchvision import transforms
@@ -42,7 +42,7 @@ def load_model(model_type, device="cuda" if torch.cuda.is_available() else "cpu"
     return model
 
 def predict_image(model, image):
-    
+
     if isinstance(image, bytes):
         image = base64.decodebytes(image)
         image = Image.open(io.BytesIO(image)).convert('RGB')

@@ -53,7 +53,7 @@
             </div>
     
             <div>
-                <img id="preview" src="" alt="Image preview..." class="img-thumbnail">
+                <img width="384" height="384" id="preview" src="" alt="Image preview..." class="img-thumbnail">
             </div>
     
             <p class="lead">Choose the size of the model you want to use:</p>
@@ -61,7 +61,7 @@
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 {% for model_id, model_name in models.items() %}
                 <label class="btn btn-outline-secondary">
-                    <input type="radio" name="model_type" id="{{ model_id }}" value="{{ model_id }}" autocomplete="off"> {{ model_name }}
+                    <input type="radio" name="model_id" id="{{ model_id }}" value="{{ model_id }}" autocomplete="off"> {{ model_name }}
                 </label>
                 {% endfor %}
             </div>
