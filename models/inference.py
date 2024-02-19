@@ -5,7 +5,12 @@ from torchvision import transforms
 import base64
 import io
 
-MODEL_PATH = "models/checkpoints/small.pt"
+MODEL_TYPE_TO_PATH = {
+    "small": "models/checkpoints/small.pt",
+    "base": "models/checkpoints/base.pt",
+    "large": "models/checkpoints/large.pt"
+}
+
 INDEX_TO_CLASS = {
     0: 'Apple___alternaria_leaf_spot', 1: 'Apple___black_rot', 2: 'Apple___brown_spot', 
     3: 'Apple___gray_spot', 4: 'Apple___healthy', 5: 'Apple___rust', 
@@ -29,6 +34,12 @@ INDEX_TO_CLASS = {
     57: 'Tomato___mosaic_virus', 58: 'Tomato___septoria_leaf_spot', 
     59: 'Tomato___spider_mites', 60: 'Tomato___target_spot'
     }
+
+def load_model(model_type, device="cuda" if torch.cuda.is_available() else "cpu"):
+    model = create_AlexNet(num_classes=61, model_size=model_type)
+    model.load_model(path=MODEL_TYPE_TO_PATH[model_type])
+    model.to(device)
+    return model
 
 def predict_image(model, image):
     
@@ -54,10 +65,7 @@ def predict_image(model, image):
         
 if __name__ == '__main__':
     # ! do a parser for the arguments --> better for the API (merge with args_train.py ???)
-    model_type = MODEL_PATH.split('/')[-1].split('.')[0]
-    model = create_AlexNet(num_classes=61, model_size=model_type)
-    model.load_model(path=MODEL_PATH)
-    model.to('cuda')
+    model = load_model('small')
     # encode the image to base64
     image = open('/home/badei/Projects/HESSIAN/data/images/Apple___alternaria_leaf_spot/000413.jpg', 'rb').read()
     image = base64.b64encode(image)
