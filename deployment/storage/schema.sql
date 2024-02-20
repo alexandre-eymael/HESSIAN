@@ -16,7 +16,6 @@ CREATE TABLE models (
 -- Create the transactions table
 CREATE TABLE queries (
     query_id INT PRIMARY KEY,
-    image_base64 TEXT NOT NULL,
     user_id INT REFERENCES users(user_id),
     model_id INT REFERENCES models(model_id)
 );

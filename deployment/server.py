@@ -8,8 +8,8 @@ from waitress import serve
 
 ###### Web Server & Preprocessing
 
-HOST = "127.0.0.1"
-PORT = 8000
+HOST = "0.0.0.0"
+PORT = 80
 
 # Folders
 UPLOAD_FOLDER = "/tmp/hessian_uploads"
@@ -54,25 +54,58 @@ def _api(api_key, image, model_name):
     if not model_id:
         return {"error" : "Invalid model name"}, 400
 
-    if image is None:
+    if image is None or len(image) == 0:
         return {"error" : "Invalid image provided"}, 400
 
     try:
         result = _inference(image, model_id)
     except Exception as e:
         return {"error" : str(e)}, 500
-        
+    
+    db.add_query(user[0], model_id)
+
     return result, 200
 
-@app.route("/api")
+@app.route("/api", methods=["GET", "POST"])
 def api():
 
     api_key = request.headers.get("HESSIAN-API-Key")
-    image = request.args.get("image")
     model_name = request.args.get("model")
+    image = request.data
 
     response, status = _api(api_key, image, model_name)
     return jsonify(response)
+
+@app.route("/api/billing")
+def billing():
+
+    api_key = request.headers.get("HESSIAN-API-Key")
+
+    user = db.get_user_from_api_key(api_key)
+    if not user:
+        return jsonify({"error" : "Invalid API key"})
+
+    queries = db.get_queries(api_key)
+
+    summary = {
+        "models" : {},
+        "total" : 0.0
+    }
+
+    for query_id, user_id, model_id, model_price, model_name in queries:
+        summary["models"][model_name] = {
+            "unit_price" : model_price,
+            "count" : summary["models"].get(model_name, {}).get("count", 0) + 1,
+            "total" : summary["models"].get(model_name, {}).get("total", 0.0) + model_price
+        }
+        summary["total"] += model_price
+
+    # Round everything to 2 decimals
+    summary["total"] = round(summary["total"], 2)
+    for model_name in summary["models"]:
+        summary["models"][model_name]["total"] = round(summary["models"][model_name]["total"], 2)
+
+    return jsonify(summary)
 
 ###### API Frontend
 
@@ -89,6 +122,25 @@ def results():
     api_key = request.form.get("api_key")
     query = request.files.get("query")
     model_id = request.form.get("model_id")
+
+    if not api_key:
+        return render_template(
+            "error.html",
+            error_message = "No API key provided"
+        )
+    
+    if not query:
+        return render_template(
+            "error.html",
+            error_message = "No image provided"
+        )
+    
+    if not model_id:
+        return render_template(
+            "error.html",
+            error_message = "No model provided"
+        )
+
     encoded_image, str_image = parse_uploaded_image(app, query)
 
     predictions, status_code = _api(api_key, encoded_image, model_id)
@@ -100,14 +152,12 @@ def results():
             error_message = error
         )
 
-    db.add_query(str_image, api_key, model_id)
-
     # Add 😊 if plant is healthy, ☠️ if not
     predictions = {f"{'😊' if 'healthy' in cls_name else '☠️'} {cls_name}": proba for cls_name, proba in predictions.items()}
 
     # Determine binary probability
-    healthy_prob = round(sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name]), 2)
-    sick_prob = 1. - healthy_prob
+    healthy_prob = round(sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name]) * 100, 2)
+    sick_prob = 100. - healthy_prob
 
     # Keep only probabilities > 0.05, and add a "Other" class with the sum of the rest
     predictions = {cls_name: proba for cls_name, proba in predictions.items() if proba > 0.05}
@@ -120,8 +170,8 @@ def results():
         "results.html",
         base_image = str_image,
         predictions = predictions,
-        healthy_prob = healthy_prob * 100,
-        sick_prob = sick_prob * 100
+        healthy_prob = healthy_prob,
+        sick_prob = sick_prob
     )
 
 ## Serve
