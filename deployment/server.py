@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, jsonify
-from utils import parse_uploaded_image
-import pathlib
-import json
-from database.database import HessianDatabase
+from .utils import parse_uploaded_image
+from .database.database import HessianDatabase
 from models.inference import load_model, predict_image
 
+from flask import Flask, render_template, request, jsonify
+import pathlib
+from waitress import serve
+
 ###### Web Server & Preprocessing
+
+HOST = "127.0.0.1"
+PORT = 8000
 
 # Folders
 UPLOAD_FOLDER = "/tmp/hessian_uploads"
@@ -40,12 +44,19 @@ def _inference(image, model_id):
     
     return predict_image(model, image)
 
-def _api(api_key, image, model_id):
+def _api(api_key, image, model_name):
 
     user = db.get_user_from_api_key(api_key)
     if not user:
         return {"error" : "Invalid API key"}, 401
     
+    model_id = db.get_model_id_by_name(model_name)
+    if not model_id:
+        return {"error" : "Invalid model name"}, 400
+
+    if image is None:
+        return {"error" : "Invalid image provided"}, 400
+
     try:
         result = _inference(image, model_id)
     except Exception as e:
@@ -53,14 +64,14 @@ def _api(api_key, image, model_id):
         
     return result, 200
 
-@app.route("/api", methods=["GET"])
+@app.route("/api")
 def api():
 
     api_key = request.headers.get("HESSIAN-API-Key")
-    image = request.json.get("image")
-    model_id = request.json.get("model_id")
+    image = request.args.get("image")
+    model_name = request.args.get("model")
 
-    response = _api(api_key, image, model_id)
+    response, status = _api(api_key, image, model_name)
     return jsonify(response)
 
 ###### API Frontend
@@ -109,6 +120,11 @@ def results():
         "results.html",
         base_image = str_image,
         predictions = predictions,
-        healthy_prob = healthy_prob,
-        sick_prob = sick_prob
+        healthy_prob = healthy_prob * 100,
+        sick_prob = sick_prob * 100
     )
+
+## Serve
+if __name__ == '__main__':
+    print(f"Starting server at {HOST}:{PORT}")
+    serve(app, host=HOST, port=PORT, threads=2, connection_limit=100)

@@ -12,4 +12,4 @@ RUN ./requirements/install_dependencies.sh api
 
 # Start the server
 ENTRYPOINT [ "python" ]
-CMD ["-m", "flask", "--app", "deployment/server", "run", "--host=0.0.0.0", "--port=80"]
+CMD ["-m", "deployment.server"]

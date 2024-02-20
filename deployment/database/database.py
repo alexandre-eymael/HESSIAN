@@ -77,6 +77,21 @@ class HessianDatabase:
         self.cursor.execute("SELECT * FROM models")
         return self.cursor.fetchall()
     
+    def get_model_id_by_name(self, model_name):
+        """
+        Get the model ID by the model name.
+
+        Args:
+            model_name (str): The model name.
+
+        Returns:
+            int: The model ID.
+        """
+        self.cursor.execute("SELECT model_id FROM models WHERE model_name = ?", (model_name,))
+        item = self.cursor.fetchone()
+        return str(item[0]) if item else None
+        
+
     def add_query(self, image_base64, user_id, model_id):
         """
         Add a query to the database.

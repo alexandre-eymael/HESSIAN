@@ -8,7 +8,7 @@ CREATE TABLE users (
 -- Create the models table
 CREATE TABLE models (
     model_id INT PRIMARY KEY,
-    model_name VARCHAR(100) NOT NULL,
+    model_name VARCHAR(100) NOT NULL UNIQUE,
     model_price DECIMAL(10, 2) NOT NULL,
     model_version VARCHAR(100) NOT NULL
 );
