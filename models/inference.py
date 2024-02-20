@@ -35,7 +35,9 @@ INDEX_TO_CLASS = {
     59: 'Tomato___spider_mites', 60: 'Tomato___target_spot'
     }
 
-def load_model(model_type, device="cuda" if torch.cuda.is_available() else "cpu"):
+def load_model(model_type, device=None):
+    if device is None:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = create_AlexNet(num_classes=61, model_size=model_type)
     model.load_model(path=MODEL_TYPE_TO_PATH[model_type])
     model.to(device)
