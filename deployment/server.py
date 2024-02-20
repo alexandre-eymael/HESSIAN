@@ -157,7 +157,7 @@ def results():
 
     # Determine binary probability
     healthy_prob = round(sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name]) * 100, 2)
-    sick_prob = 100. - healthy_prob
+    sick_prob = round(100. - healthy_prob, 2)
 
     # Keep only probabilities > 0.05, and add a "Other" class with the sum of the rest
     predictions = {cls_name: proba for cls_name, proba in predictions.items() if proba > 0.05}
