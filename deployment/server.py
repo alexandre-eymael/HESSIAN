@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 from utils import parse_uploaded_image
 import pathlib
 import json
@@ -60,7 +60,8 @@ def api():
     image = request.json.get("image")
     model_id = request.json.get("model_id")
 
-    return _api(api_key, image, model_id)
+    response = _api(api_key, image, model_id)
+    return Response(response, mimetype="application/json")
 
 ###### API Frontend
 

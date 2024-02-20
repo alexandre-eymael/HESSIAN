@@ -7,12 +7,9 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-RUN ls -la /app
-
 # Run pip install for all the requirements in /app/requirements/*.txt
 RUN ./requirements/install_dependencies.sh api
 
-# configure the container to run in an executed manner
+# Start the server
 ENTRYPOINT [ "python" ]
-
-CMD ["-m", "flask", "--app", "deployment/server", "run", "--debug"]
+CMD ["-m", "flask", "--app", "deployment/server", "run", "--host=0.0.0.0", "--port=80"]
