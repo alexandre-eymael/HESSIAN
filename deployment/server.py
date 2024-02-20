@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, jsonify
 from utils import parse_uploaded_image
 import pathlib
 import json
@@ -61,7 +61,7 @@ def api():
     model_id = request.json.get("model_id")
 
     response = _api(api_key, image, model_id)
-    return Response(response, mimetype="application/json")
+    return jsonify(response)
 
 ###### API Frontend
 
@@ -69,7 +69,7 @@ def api():
 def submit():
     return render_template(
         "submit.html",
-        models = {model_id : model_name for model_id, model_name, price, version in models}
+        models = {model_id : model_name for model_id, model_name, _, _ in models}
     )
 
 @app.route("/result", methods=["POST"])
@@ -94,18 +94,21 @@ def results():
     # Add 😊 if plant is healthy, ☠️ if not
     predictions = {f"{'😊' if 'healthy' in cls_name else '☠️'} {cls_name}": proba for cls_name, proba in predictions.items()}
 
-    # Determine probability of healthy
-    healthy_prob = sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name])
+    # Determine binary probability
+    healthy_prob = round(sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name]), 2)
     sick_prob = 1. - healthy_prob
 
     # Keep only probabilities > 0.05, and add a "Other" class with the sum of the rest
     predictions = {cls_name: proba for cls_name, proba in predictions.items() if proba > 0.05}
     predictions["Other"] = 1 - sum(predictions.values())
 
+    # Parse predictions for display
+    predictions = {' '.join(cls_name.replace('_', ' ').split()): round(proba*100, 2) for cls_name, proba in predictions.items()}
+
     return render_template(
         "results.html",
         base_image = str_image,
-        predictions = {' '.join(cls_name.replace('_', ' ').split()): round(proba*100, 2) for cls_name, proba in predictions.items()},
-        healthy_prob = round(healthy_prob*100, 2),
-        sick_prob = round(sick_prob*100, 2)
+        predictions = predictions,
+        healthy_prob = healthy_prob,
+        sick_prob = sick_prob
     )
