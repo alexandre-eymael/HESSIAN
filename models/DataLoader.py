@@ -7,18 +7,17 @@ import torch
 class LeafDataset(Dataset):
     
     def __init__(self, data_dir, transform=None, load_all_in_memory=False, max_samples=None):
-        
         self.load_all_in_memory = load_all_in_memory
         self.transform = transform or (lambda x: x)
         self.data_dir = pathlib.Path(data_dir)
         # get the size of the dataset for all possible images jpg, jpeg, png
-        self.imgs = list(self.data_dir.glob('*/*')) # list of all images paths
+        self.imgs = list(self.data_dir.glob('**/*')) # list of all images paths
         # shuffle the images
-        self.imgs = [img for img in self.imgs if img.suffix in ['.jpg', '.jpeg', '.png']]
+        self.imgs = [img for img in self.imgs if img.suffix in ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG']]
         if max_samples:
             self.imgs = self.imgs[:max_samples]
         self.len_data = len(self.imgs)
-        self.class_names = sorted([item.name for item in self.data_dir.glob('*')])
+        self.class_names = sorted([item.name for item in self.data_dir.glob('*/*')])
         self.class_to_idx = {item: i for i, item in enumerate(self.class_names)}
         
         self.imgs = [
