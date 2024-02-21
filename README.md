@@ -16,16 +16,18 @@ The HESSIAN project is carried out as part of the [INFO9023 - Machine Learning S
 We provide a table detailing all the features implemented in this project, along with their respective implementation locations. Upon navigating to these locations, you will find an additional `README.md` file in the corresponding subdirectory, which serves to further explain and demonstrate the implemented feature.
 
 |       #       |             Work package             | Required? | Implemented? |                                      Location                                     |
-|:-------------:|:------------------------------------:|:---------:|:------------:|:---------------------------------------------------------------------------------:|
+|-------------|------------------------------------|---------|:------------:|---------------------------------------------------------------------------------|
 |    **1.1**    |              Pick a team             |     ✅     |       ✅      |                                 <a href="./">.<a>                                 |
 |    **1.2**    |         Communication channel        |     ✅     |       ✅      |                                 <a href="./">.<a>                                 |
-| **1.3 + 1.4** |          Use Case Definition         |     ✅     |       ✅      |                       <a href="./USECASE.md"> USECASE.md <a>                      |
+| **1.3** |          Use Case Selection         |     ✅     |       ✅      |                       <a href="./USECASE.md"> USECASE.md <a>                      |
+| **1.4** |          Use Case Definition         |     ✅     |       ✅      |                       <a href="./USECASE.md"> USECASE.md <a>                      |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
 |    **1.5**    |  Setup a code versioning repository  |     ✅     |       ✅      |                                 <a href="./">.<a>                                 |
 |    **1.6**    |              Find a name             |     ✅     |       ✅      |                                 <a href="./">.<a>                                 |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
 |    **2.1**    |       Exploratory Data Analysis      |     ✅     |       ✅      | <a href="./exploratory_data_analysis.ipynb"> exploratory_data_analysis.ipynb </a> |
-| **2.2 + 2.3** |     Train and evaluate your model    |     ✅     |       ✅      |                          <a href="./models"> models/ </a>                         |
+| **2.2** |     Train your model    |     ✅     |       ✅      |                          <a href="./models"> models/ </a>                         |
+| **2.3** |     Evaluate your model    |     ✅     |       ✅      |                          <a href="./models"> models/ </a>                         |
 |    **2.4**    |          Weights and Biases          |     ❌     |       ✅      |                          <a href="./models"> models/ </a>                         |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
 |    **3.1**    |        API to serve the model        |     ✅     |       ✅      |                      <a href="./deployment"> deployment/ </a>                     |
