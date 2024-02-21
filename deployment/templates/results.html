@@ -14,17 +14,49 @@
             margin: 10px 0;
             border-radius: 5px;
         }
+        .bar::before {
+            content: attr(data-percent); /* Use a data attribute for the percentage */
+            position: relative;
+            bottom: -20px; /* Adjust this value to control how high the text appears */
+            /* Additional styling for the text */
+        }
         .bar {
-            height: 18px;
+            height: 21px;
             border-radius: 5px;
             background-color: #4CAF50;
             text-align: right;
             padding-right: 5px;
-            color: white;
+            color: black;
             box-sizing: border-box;
+            position: absolute; /* Position the bar absolutely within its container */
+            bottom: 0; /* Align to the bottom of the container */
+            height: 100%; /* Full height of the container */
+            /* Your existing styles for width, background, etc. */
         }
         .image-container {
             text-align: center;
+            position: relative; /* Added for positioning numbers */
+        }
+        .number {
+            position: absolute;
+            font-size: 2em; /* Makes the numbers bigger than other texts */
+        }
+        .green-number {
+            color: green;
+            top: 50%;
+            left: 20%; /* Adjust as needed */
+            transform: translate(-100%, -50%); /* Adjust to center vertically next to the image */
+        }
+        .red-number {
+            color: rgb(255, 95, 87);
+            top: 50%;
+            right: 20%; /* Adjust as needed */
+            transform: translate(100%, -50%); /* Adjust to center vertically next to the image */
+        }
+        .bar-container {
+            position: relative; /* Ensure the container is positioned */
+            height: 25px; /* Adjust based on your design */
+            /* Other styling */
         }
     </style>
 </head>
@@ -33,18 +65,21 @@
 <div class="container mt-5">
     <h2>Model Predictions</h2>
     <div class="image-container">
-        <img src="{{base_image}}" alt="Original Image" class="img-thumbnail">
+        <!-- Numbers added here -->
+        <div class="number green-number">Healthy: {{ healthy_prob }}%</div> <!-- Example green number -->
+        <img width="384" height="384" src="{{base_image}}" alt="Original Image" class="img-thumbnail">
+        <div class="number red-number">Sick: {{ sick_prob }}%</div> <!-- Example red number -->
+        <br>
         <h3 class="mt-4">Predictions</h3>
     </div>
-
-    {% for key, value in predictions.items() %}
-        <div class="prediction">
-            <p>{{key}}: <span class="percent">{{value}}%</span></p>
-            <div class="bar-container">
-                <div class="bar" style="width:{{value}}%">{{value}}%</div>
+        {% for key, value in predictions.items()|sort(attribute='1', reverse=True) %}
+            <div class="prediction">
+                <h5>{{key}}</h5>
+                <div class="bar-container">
+                    <div class="bar" style="width:{{value}}%">{{value}}%</div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     
 </div>
 

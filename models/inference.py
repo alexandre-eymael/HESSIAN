@@ -1,6 +1,7 @@
-from AlexNet import create_AlexNet
+from .AlexNet import create_AlexNet
+
 import torch
-from PIL import Image
+from PIL import Image, ImageFile
 from torchvision import transforms
 import base64
 import io
@@ -35,17 +36,22 @@ INDEX_TO_CLASS = {
     59: 'Tomato___spider_mites', 60: 'Tomato___target_spot'
     }
 
-def load_model(model_type, device="cuda" if torch.cuda.is_available() else "cpu"):
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+def load_model(model_type, device=None):
+    if device is None:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = create_AlexNet(num_classes=61, model_size=model_type)
     model.load_model(path=MODEL_TYPE_TO_PATH[model_type])
     model.to(device)
     return model
 
 def predict_image(model, image):
-    
-    if isinstance(image, bytes):
-        image = base64.decodebytes(image)
+
+    if isinstance(image, bytes) or isinstance(image, str):
+        image = base64.b64decode(image)
         image = Image.open(io.BytesIO(image)).convert('RGB')
+
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),

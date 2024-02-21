@@ -65,7 +65,8 @@ class HessianDatabase:
             str: The user associated with the API key.
         """
         self.cursor.execute("SELECT * FROM users WHERE api_key = ?", (api_key,))
-        return self.cursor.fetchone()
+        user = self.cursor.fetchone()
+        return user if user else None
 
     def get_models(self):
         """
@@ -77,14 +78,49 @@ class HessianDatabase:
         self.cursor.execute("SELECT * FROM models")
         return self.cursor.fetchall()
     
-    def add_query(self, image_base64, user_id, model_id):
+    def get_model_id_by_name(self, model_name):
+        """
+        Get the model ID by the model name.
+
+        Args:
+            model_name (str): The model name.
+
+        Returns:
+            int: The model ID.
+        """
+        self.cursor.execute("SELECT model_id FROM models WHERE model_name = ?", (model_name,))
+        item = self.cursor.fetchone()
+        return str(item[0]) if item else None
+        
+
+    def add_query(self, user_id, model_id):
         """
         Add a query to the database.
 
         Args:
-            image_base64 (str): The base64 encoded image.
             user_id (int): The user ID.
             model_id (int): The model ID.
         """
-        self.cursor.execute("INSERT INTO queries (image_base64, user_id, model_id) VALUES (?, ?, ?)", (image_base64, user_id, model_id))
+        self.cursor.execute("INSERT INTO queries (user_id, model_id) VALUES (?, ?)", (user_id, model_id))
         self.conn.commit()
+
+    def get_queries(self, api_key):
+        """
+        Get the queries linked to the user whose API key is `api_key`.
+
+        Args:
+            api_key (str): The API key of the user.
+
+        Returns:
+            list: The queries linked to the user.
+        """
+        query = """
+        SELECT q.query_id, q.user_id, q.model_id, m.model_price, m.model_name
+        FROM queries q
+        JOIN users u ON q.user_id = u.user_id
+        JOIN models m ON q.model_id = m.model_id
+        WHERE u.api_key = ?
+        """
+        self.cursor.execute(query, (api_key,))
+        return self.cursor.fetchall()
+

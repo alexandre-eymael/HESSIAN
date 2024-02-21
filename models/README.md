@@ -1,8 +1,14 @@
-# Pre-trained Model Checkpoints Overview
+# Models
 
-This document provides an overview of the pre-trained model checkpoints available for use. Each checkpoint is tailored to different computational needs and accuracy requirements.
+This document offers an overview of the model architectures we have utilized, along with the checkpoints for each. Every checkpoint is designed to meet varying computational demands and accuracy expectations.
+
+## Architecture
+
+All our models draw inspiration from the AlexNet architecture [[1]](#1). Their implementations are available in the `AlexNet.py` file. The training script that was used can be found in `train.py`. Finally, `inference.py` contains the code used to make predictions with our models.
 
 ## Available Checkpoints
+
+All checkpoints can be found in the `checkpoints` subdirectory.
 
 - **`small.pt`**: Contains the weights for the small-sized model variant. Ideal for environments with limited computational resources.
 - **`base.pt`**: Contains the weights for the base-sized model variant. Offers a balance between performance and computational efficiency.
@@ -29,10 +35,13 @@ The following table presents a detailed comparison of the performance metrics ac
 
 The ROC curve below illustrates the trade-off between sensitivity and specificity for the different model variants. It provides insight into the diagnostic ability of the models at various threshold settings.
 
-![Receiver Operating Characteristic Curve](ROC.png)
+![ROC Curve](images/ROC.png)
 
 This graphical representation aids in the evaluation of model performance, particularly in binary classification tasks.
 
 ---
 
-For further information or to access the model checkpoints, please refer to the project repository or contact the project maintainers.
+## References
+<a id="1">[1]</a> 
+Krizhevsky, Alex, Sutskever, Ilya, and Hinton, Geoffrey E. Imagenet classification with deep convolutional
+neural networks. In Advances in neural information processing systems, pp. 1097–1105, 2012.

@@ -53,8 +53,10 @@ class AlexNet(nn.Module):
             'loss': loss,
         }, path)
         
-    def load_model(self, path):
-        checkpoint = torch.load(path)
+    def load_model(self, path, device=None):
+        if device is None:
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        checkpoint = torch.load(path, map_location=device)
         self.load_state_dict(checkpoint['model_state_dict'])
         return checkpoint['epoch'], checkpoint['optimizer_state_dict'], checkpoint['loss']
 

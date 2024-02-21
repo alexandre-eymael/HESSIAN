@@ -41,11 +41,13 @@
 
     <div class="container mt-5">
         <h2>HESSIAN 🌲</h2>
+        <p>Welcome to <strong>HESSIAN</strong>, a pioneering initiative led by "The Foresters 🌲" team, dedicated to the health evaluation and surveillance of plant life using cutting-edge analytical networking techniques. Our mission is to leverage advanced algorithms and data analytics to detect, classify, and understand the health of leaves, ultimately contributing to the preservation and care of our vital forest ecosystems.</p>
+        <p>This interface allows you to query our leaf diagnosis models through our <a href="./api">API</a>. Simply upload a photo of a leaf, and let our models determine whether your leaf appears healthy or not. Additionally, we will provide insights into any potential diseases your leaf may have.</p>
         <form enctype="multipart/form-data" id="leafDiagnosisForm" action="/result" method="POST">
             <p class="lead">Enter your API key:</p>
             <input type="text" class="form-control mb-3" id="api_key" placeholder="API Key" name="api_key">
     
-            <p class="lead">Update the image of the leaf you want to diagnose:</p>
+            <p class="lead">Upload the image of the leaf you want to diagnose:</p>
             
             <div class="upload-btn-wrapper mb-3">
                 <button class="btn btn-outline-secondary" type="button">Upload Image</button>
@@ -53,7 +55,7 @@
             </div>
     
             <div>
-                <img id="preview" src="" alt="Image preview..." class="img-thumbnail">
+                <img width="384" height="384" id="preview" src="" alt="Image preview..." class="img-thumbnail">
             </div>
     
             <p class="lead">Choose the size of the model you want to use:</p>
@@ -61,7 +63,7 @@
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 {% for model_id, model_name in models.items() %}
                 <label class="btn btn-outline-secondary">
-                    <input type="radio" name="model_type" id="{{ model_id }}" value="{{ model_id }}" autocomplete="off"> {{ model_name }}
+                    <input type="radio" name="model_id" id="{{ model_id }}" value="{{ model_name }}" autocomplete="off"> {{ model_name }}
                 </label>
                 {% endfor %}
             </div>
