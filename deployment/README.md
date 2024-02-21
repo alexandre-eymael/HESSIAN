@@ -17,6 +17,7 @@ To perform inference on an image, the request should contain the model type as p
 
 ```python
 import requests
+import base64
 
 def query_hessian_api(api_key, image, model_name):
 
@@ -31,7 +32,11 @@ def query_hessian_api(api_key, image, model_name):
 
 # Query the API
 api_key = "d8c7cbcb-447d-4273-b285-5c88626b23be"
+
+# Encode the image in base64
 image = "https://agrio.app/wp-content/uploads/2019/11/image1-17.jpg"
+image = base64.b64encode(requests.get(image).content).decode("utf-8")
+
 model_size = "large"
 
 response = query_hessian_api(api_key, image, model_size)
@@ -59,6 +64,8 @@ def query_billing(api_key):
     return response.json()
 
 # Query the API
+api_key = "d8c7cbcb-447d-4273-b285-5c88626b23be"
+
 billing = query_billing(api_key)
 ```
 The result is a JSON summarizing your usage of HESSIAN for all models that you have used. All amounts are expressed in euros (€).
