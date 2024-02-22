@@ -11,5 +11,4 @@ RUN pip install -r requirements/train/requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-ENTRYPOINT [ "python" ]
-CMD ["-m", "models.train"]
+ENTRYPOINT [ "python", "-m", "models.train" ]
