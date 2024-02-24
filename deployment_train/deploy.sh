@@ -1,6 +1,3 @@
-echo "Creating a new volume..."
-bash create_data_volume.sh
-
 # Build new image
 echo "Building new image..."
 bash build_docker.sh
