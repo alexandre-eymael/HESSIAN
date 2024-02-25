@@ -14,10 +14,10 @@ import numpy as np
 import torch
 from torch import nn
 from torchvision import transforms
-from alexnet import create_alexnet
-from args_train import get_args_parser
-from data_loader import LeafDataset, get_dataloader
-from wandb_logger import WandbLogger
+from .alexnet import create_alexnet
+from .args_train import get_args_parser
+from .data_loader import LeafDataset, get_dataloader
+from .wandb_logger import WandbLogger
 
 HEALTHY_CLASSES = [4, 8, 9, 13, 15, 19, 23, 28, 31, 37, 42, 44, 46, 53]
 
