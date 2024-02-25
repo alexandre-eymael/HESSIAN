@@ -1,10 +1,16 @@
-from .utils import parse_uploaded_image
-from .database.database import HessianDatabase
-from models.inference import load_model, predict_image
+"""
+Hessian API Server
 
-from flask import Flask, render_template, request, jsonify
+This module implements a Flask-based web server for the Hessian API.
+It provides endpoints for querying the API, retrieving billing details,
+and serving a frontend for submitting queries and displaying results.
+"""
 import pathlib
+from flask import Flask, render_template, request, jsonify
 from waitress import serve
+from utils import parse_uploaded_image
+from database.database import HessianDatabase
+from models.inference import load_model, predict_image
 
 ###### Web Server & Preprocessing
 
@@ -39,9 +45,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def _inference(image, model_id):
     try:
         model = inference_models[model_id]
-    except KeyError:
-        raise ValueError(f"Model type {model_id} not found")
-    
+    except KeyError as e:
+        raise ValueError(f"Model type {model_id} not found") from e
+
     return predict_image(model, image)
 
 def _api(api_key, image, model_name):
@@ -49,7 +55,7 @@ def _api(api_key, image, model_name):
     user = db.get_user_from_api_key(api_key)
     if not user:
         return {"error" : "Invalid API key"}, 401
-    
+
     model_id = db.get_model_id_by_name(model_name)
     if not model_id:
         return {"error" : "Invalid model name"}, 400
@@ -61,23 +67,35 @@ def _api(api_key, image, model_name):
         result = _inference(image, model_id)
     except Exception as e:
         return {"error" : str(e)}, 500
-    
+
     db.add_query(user[0], model_id)
 
     return result, 200
 
 @app.route("/api", methods=["GET", "POST"])
 def api():
+    """
+    API endpoint for the Hessian API.
+
+    Returns:
+        str: The API response.
+    """
 
     api_key = request.headers.get("HESSIAN-API-Key")
     model_name = request.args.get("model")
     image = request.data
 
-    response, status = _api(api_key, image, model_name)
+    response, _ = _api(api_key, image, model_name)
     return jsonify(response)
 
 @app.route("/api/billing")
 def billing():
+    """
+    API endpoint for the billing details.
+
+    Returns:
+        str: The billing details.
+    """
 
     api_key = request.headers.get("HESSIAN-API-Key")
 
@@ -92,7 +110,7 @@ def billing():
         "total" : 0.0
     }
 
-    for query_id, user_id, model_id, model_price, model_name in queries:
+    for _, _, _, model_price, model_name in queries:
         summary["models"][model_name] = {
             "unit_price" : model_price,
             "count" : summary["models"].get(model_name, {}).get("count", 0) + 1,
@@ -111,6 +129,12 @@ def billing():
 
 @app.route("/")
 def submit():
+    """
+    Submit a query to the Hessian API.
+
+    Returns:
+        str: The rendered HTML page.
+    """
     return render_template(
         "submit.html",
         models = {model_id : model_name for model_id, model_name, _, _ in models}
@@ -118,6 +142,12 @@ def submit():
 
 @app.route("/result", methods=["POST"])
 def results():
+    """
+    Get the results of the query to the Hessian API.
+
+    Returns:
+        str: The rendered HTML page.
+    """
 
     api_key = request.form.get("api_key")
     query = request.files.get("query")
@@ -128,13 +158,13 @@ def results():
             "error.html",
             error_message = "No API key provided"
         )
-    
+
     if not query:
         return render_template(
             "error.html",
             error_message = "No image provided"
         )
-    
+
     if not model_id:
         return render_template(
             "error.html",
@@ -153,10 +183,13 @@ def results():
         )
 
     # Add 😊 if plant is healthy, ☠️ if not
-    predictions = {f"{'😊' if 'healthy' in cls_name else '☠️'} {cls_name}": proba for cls_name, proba in predictions.items()}
+    predictions = {f"{'😊' if 'healthy' in cls_name else '☠️'} {cls_name}":
+                   proba for cls_name, proba in predictions.items()}
 
     # Determine binary probability
-    healthy_prob = round(sum([proba for cls_name, proba in predictions.items() if "healthy" in cls_name]) * 100, 2)
+    healthy_prob = round(sum(proba for cls_name, proba in predictions.items()
+                             if "healthy" in cls_name) * 100, 2)
+
     sick_prob = round(100. - healthy_prob, 2)
 
     # Keep only probabilities > 0.05, and add a "Other" class with the sum of the rest
@@ -164,7 +197,8 @@ def results():
     predictions["Other"] = 1 - sum(predictions.values())
 
     # Parse predictions for display
-    predictions = {' '.join(cls_name.replace('_', ' ').split()): round(proba*100, 2) for cls_name, proba in predictions.items()}
+    predictions = {' '.join(cls_name.replace('_', ' ').split()): round(proba*100, 2)
+                   for cls_name, proba in predictions.items()}
 
     return render_template(
         "results.html",
