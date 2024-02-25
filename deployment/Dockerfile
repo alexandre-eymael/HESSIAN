@@ -10,6 +10,7 @@ COPY . /app
 # Run pip install for all the requirements in /app/requirements/*.txt
 RUN ./requirements/install_dependencies.sh api
 
+
 # Start the server
 ENTRYPOINT [ "python" ]
 CMD ["-m", "deployment.server"]
