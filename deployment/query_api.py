@@ -1,3 +1,8 @@
+"""
+Module for querying the API.
+This module contains functions for querying the API and processing the results.
+"""
+
 import base64
 from collections import OrderedDict
 from pprint import pprint
@@ -22,7 +27,7 @@ def _parse_image(image_path):
             response = requests.get(image_path)
             image = response.content
         except Exception as e:
-           raise ValueError(f"Image {e} does not exist locally or remotely") from e
+            raise ValueError(f"Image {e} does not exist locally or remotely") from e
     return base64.b64encode(image).decode("utf-8")
 
 def _top_k_predictions(predictions, k=5):
@@ -96,5 +101,5 @@ if __name__ == "__main__":
 
     # Query the billing details
     print("<== Billing Details ==>")
-    billing = query_billing(_api_key)
+    billing = query_billing(_API_KEY)
     pprint(billing)

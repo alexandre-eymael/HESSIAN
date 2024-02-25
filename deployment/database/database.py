@@ -1,3 +1,8 @@
+"""
+Database module for handling database operations.
+This module provides a class to interact with the database.
+"""
+
 import sqlite3
 
 class HessianDatabase:
@@ -101,7 +106,7 @@ class HessianDatabase:
             user_id (int): The user ID.
             model_id (int): The model ID.
         """
-        self.cursor.execute("INSERT INTO queries (user_id, model_id) VALUES (?, ?)", 
+        self.cursor.execute("INSERT INTO queries (user_id, model_id) VALUES (?, ?)",
                             (user_id, model_id))
         self.conn.commit()
 
