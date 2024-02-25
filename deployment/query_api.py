@@ -24,7 +24,7 @@ def _parse_image(image_path):
             image = f.read()
     except FileNotFoundError:
         try:
-            response = requests.get(image_path)
+            response = requests.get(image_path, timeout=10)
             image = response.content
         except Exception as e:
             raise ValueError(f"Image {e} does not exist locally or remotely") from e
@@ -57,7 +57,8 @@ def query_hessian_api(api_key, image, model_name):
         URL,
         headers={"HESSIAN-API-Key": api_key},
         params={"model": model_name},
-        data=_parse_image(image)
+        data=_parse_image(image),
+        timeout=10
     )
     return response.json()
 
@@ -73,7 +74,8 @@ def query_billing(api_key):
     """
     response = requests.get(
         f"{URL}/billing",
-        headers={"HESSIAN-API-Key": api_key}
+        headers={"HESSIAN-API-Key": api_key},
+        timeout=10
     )
     return response.json()
 
