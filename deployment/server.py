@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, jsonify
 from waitress import serve
 from .utils import parse_uploaded_image
 from .database.database import HessianDatabase
-from .models.inference import load_model, predict_image
+from models.inference import load_model, predict_image
 
 ###### Web Server & Preprocessing
 
