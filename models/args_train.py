@@ -8,7 +8,7 @@ def get_args_parser():
     parser.add_argument("--model_size", type=str, default="small", choices=["small", "base", "large"], help="Size of the model")
 
     # Checkpoints
-    parser.add_argument("--save_path", type=str, default="./checkpoints", help="Path to save the checkpoints")
+    parser.add_argument("--save_path", type=str, default="./weights", help="Path to save the checkpoints")
     parser.add_argument("--save_freq", type=int, default=5, help="Save frequency")
 
     # Dataset
