@@ -41,3 +41,5 @@ def parse_uploaded_image(app, query):
         str_image = f"data:image/jpeg;base64,{encoded_string.decode('utf-8')}"
 
         return encoded_string, str_image
+
+    return None, None
