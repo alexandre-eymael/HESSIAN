@@ -15,7 +15,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd ./root/HESSIAN
+            cd /root/HESSIAN
             git checkout .
             git pull
             cd deployment
