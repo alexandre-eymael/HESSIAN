@@ -2,9 +2,7 @@ name: training
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "train-my-model" ]
 
 jobs:
   deploy:
