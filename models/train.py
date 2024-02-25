@@ -17,7 +17,7 @@ from torchvision import transforms
 from .args_train import get_args_parser
 from .alexnet import create_AlexNet
 from .data_loader import LeafDataset, get_dataloader
-from .WandbLogger import WandbLogger
+from .wandb_logger import WandbLogger
 
 HEALTHY_CLASSES = [4, 8, 9, 13, 15, 19, 23, 28, 31, 37, 42, 44, 46, 53]
 
