@@ -12,7 +12,7 @@ import io
 import torch
 from PIL import Image, ImageFile
 from torchvision import transforms
-from alexnet import create_alexnet
+from .alexnet import create_alexnet
 
 MODEL_TYPE_TO_PATH = {
     "small": "models/checkpoints/small.pt",
