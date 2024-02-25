@@ -1,7 +1,8 @@
-import requests
 import base64
 from collections import OrderedDict
 from pprint import pprint
+import requests
+
 
 URL = "http://hessian.be/api"
 
@@ -21,7 +22,7 @@ def _parse_image(image_path):
             response = requests.get(image_path)
             image = response.content
         except Exception as e:
-            raise ValueError(f"Image {e} does not exist locally or remotely")
+           raise ValueError(f"Image {e} does not exist locally or remotely") from e
     return base64.b64encode(image).decode("utf-8")
 
 def _top_k_predictions(predictions, k=5):
@@ -75,25 +76,25 @@ def query_billing(api_key):
 if __name__ == "__main__":
 
     # Your API key
-    api_key = "d8c7cbcb-447d-4273-b285-5c88626b23be"
+    _API_KEY = "d8c7cbcb-447d-4273-b285-5c88626b23be"
 
     ## Example #1 - Predictions
 
     # Cassava Mosaic Disease
-    image = "https://agrio.app/wp-content/uploads/2019/11/image1-17.jpg"
-    model_size = "large"
+    _IMAGE = "https://agrio.app/wp-content/uploads/2019/11/image1-17.jpg"
+    MODEL_SIZE = "large"
 
     # Query the API
-    response = query_hessian_api(api_key, image, model_size)
-    top_k = _top_k_predictions(response)
-    
+    _response = query_hessian_api(_API_KEY, _IMAGE, MODEL_SIZE)
+    top_k = _top_k_predictions(_response)
+
     print("<== Predictions ==>")
     pprint(top_k)
 
     print("\n")
     ## Example #2 - Billing Details
-    
+
     # Query the billing details
     print("<== Billing Details ==>")
-    billing = query_billing(api_key)
+    billing = query_billing(_api_key)
     pprint(billing)

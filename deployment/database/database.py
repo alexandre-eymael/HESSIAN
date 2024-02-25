@@ -23,7 +23,7 @@ class HessianDatabase:
         Args:
             schema (str): The path to the SQL schema file.
         """
-        with open(schema, "r") as f:
+        with open(schema, "r", encoding='utf-8') as f:
             self.cursor.executescript(f.read())
             self.conn.commit()
 
@@ -37,7 +37,7 @@ class HessianDatabase:
         Returns:
 
         """
-        with open(data, "r") as f:
+        with open(data, "r", encoding='utf-8') as f:
             self.cursor.executescript(f.read())
             self.conn.commit()
 
@@ -77,7 +77,7 @@ class HessianDatabase:
         """
         self.cursor.execute("SELECT * FROM models")
         return self.cursor.fetchall()
-    
+
     def get_model_id_by_name(self, model_name):
         """
         Get the model ID by the model name.
@@ -91,7 +91,7 @@ class HessianDatabase:
         self.cursor.execute("SELECT model_id FROM models WHERE model_name = ?", (model_name,))
         item = self.cursor.fetchone()
         return str(item[0]) if item else None
-        
+
 
     def add_query(self, user_id, model_id):
         """
@@ -101,7 +101,8 @@ class HessianDatabase:
             user_id (int): The user ID.
             model_id (int): The model ID.
         """
-        self.cursor.execute("INSERT INTO queries (user_id, model_id) VALUES (?, ?)", (user_id, model_id))
+        self.cursor.execute("INSERT INTO queries (user_id, model_id) VALUES (?, ?)", 
+                            (user_id, model_id))
         self.conn.commit()
 
     def get_queries(self, api_key):
@@ -123,4 +124,3 @@ class HessianDatabase:
         """
         self.cursor.execute(query, (api_key,))
         return self.cursor.fetchall()
-
