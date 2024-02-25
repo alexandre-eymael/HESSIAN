@@ -7,12 +7,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
 
+  # Run PEP8 checks
+  pylint:
+    uses: ./.github/workflows/pylint.yml
+  
+  # Run tests
+  pytest:
+    uses: ./.github/workflows/pytest.yml
+
+  # Deploy the model if the tests pass
+  deploy:
+    needs: [pylint, pytest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: connect to VPS and deploy the model
+      - name: Connect to VPS and deploy the model
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_IP }}
