@@ -11,14 +11,10 @@ jobs:
   # Run PEP8 checks
   pylint:
     uses: ./.github/workflows/pylint.yml
-  
-  # Run tests
-  pytest:
-    uses: ./.github/workflows/pytest.yml
 
   # Deploy the model if the tests pass
   deploy:
-    needs: [pylint, pytest]
+    needs: [pylint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,5 +30,10 @@ jobs:
             git pull
             cd deployment
             bash deploy.sh
+
+  # Run tests
+  pytest:
+    needs: [deploy]
+    uses: ./.github/workflows/pytest.yml
             
             
