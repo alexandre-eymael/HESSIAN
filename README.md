@@ -34,16 +34,16 @@ We provide a table detailing all the features implemented in this project, along
 |    **3.2**    |        Package API in a Docker       |     ✅     |       ✅      |                      <a href="./deployment"> deployment/ </a>                     |
 |    **3.3**    |        Deploy API in the cloud       |     ✅     |       ✅      |                      <a href="./deployment"> deployment/ </a>                     |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
-|    **4.1**    |  Package model training in a Docker  |     ❌     |       ❌      |                                                                                   |
-|    **4.2**    | Run your model training in the cloud |     ❌     |       ❌      |                                                                                   |
+|    **4.1**    |  Package model training in a Docker  |     ❌     |       ✅      |                      <a href="./deployment_train"> deployment_train/ </a>                                             |
+|    **4.2**    | Run your model training in the cloud |     ❌     |       ✅      |                      <a href="./deployment_train"> deployment_train/ </a>                                                              |
 |    **4.3**    |          Automated Pipeline          |     ❌     |       ❌      |                                                                                   |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
 | **5.1**       | Dashboard                            | ❌         | ❌            |                                                                                   |
-| **5.2**       | CICD                                 | ✅         | ❌            |                                                                                   |
-| **5.3**       | CICD: Model Training                 | ❌         | ❌            |                                                                                   |
-| **5.4**       | CICD: Model Deployment               | ❌         | ❌            |                                                                                   |
-| **5.5**       | CICD: Pylint                         | ❌         | ❌            |                                                                                   |
-| **5.6**       | CICD: Pytest                         | ❌         | ❌            |                                                                                   |
+| **5.2**       | CICD                                 | ✅         | ✅            |                      <a href="./.github/workflows"> .github/workflows/ </a>                                                            |
+| **5.3**       | CICD: Model Training                 | ❌         | ✅            |                      <a href="./.github/workflows/training.yml"> .github/workflows/training.yml </a>                                                             |
+| **5.4**       | CICD: Model Deployment               | ❌         | ✅            |                      <a href="./.github/workflows/deploy.yml"> .github/workflows/deploy.yml </a>                                                             |
+| **5.5**       | CICD: Pylint                         | ❌         | ✅            |                      <a href="./.github/workflows/pylint.yml"> .github/workflows/pylint.yml </a>                                                            |
+| **5.6**       | CICD: Pytest                         | ❌         | ✅            |                      <a href="./.github/workflows/pytest.yml"> .github/workflows/pytest.yml </a>                                                             |
 
 ## 📃 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
