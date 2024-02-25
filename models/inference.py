@@ -78,7 +78,7 @@ def predict_image(model, image):
         dict: Predicted probabilities for each class.
 
     """
-    if isinstance(image, bytes) or isinstance(image, str):
+    if isinstance(image, (bytes, str)):
         image = base64.b64decode(image)
         image = Image.open(io.BytesIO(image)).convert('RGB')
 
