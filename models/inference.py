@@ -12,7 +12,7 @@ import io
 import torch
 from PIL import Image, ImageFile
 from torchvision import transforms
-from .alexnet import create_AlexNet
+from alexnet import create_alexnet
 
 MODEL_TYPE_TO_PATH = {
     "small": "models/checkpoints/small.pt",
@@ -61,7 +61,7 @@ def load_model(model_type, device=None):
     """
     if device is None:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = create_AlexNet(num_classes=61, model_size=model_type)
+    model = create_alexnet(num_classes=61, model_size=model_type)
     model.load_model(path=MODEL_TYPE_TO_PATH[model_type])
     model.to(device)
     return model

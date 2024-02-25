@@ -8,9 +8,9 @@ and serving a frontend for submitting queries and displaying results.
 import pathlib
 from flask import Flask, render_template, request, jsonify
 from waitress import serve
+from utils import parse_uploaded_image
 from models.inference import load_model, predict_image
 from .database.database import HessianDatabase
-from .utils import parse_uploaded_image
 
 ###### Web Server & Preprocessing
 

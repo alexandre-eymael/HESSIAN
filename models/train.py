@@ -14,10 +14,10 @@ import numpy as np
 import torch
 from torch import nn
 from torchvision import transforms
-from .args_train import get_args_parser
-from .alexnet import create_AlexNet
-from .data_loader import LeafDataset, get_dataloader
-from .wandb_logger import WandbLogger
+from alexnet import create_alexnet
+from args_train import get_args_parser
+from data_loader import LeafDataset, get_dataloader
+from wandb_logger import WandbLogger
 
 HEALTHY_CLASSES = [4, 8, 9, 13, 15, 19, 23, 28, 31, 37, 42, 44, 46, 53]
 
@@ -147,15 +147,15 @@ if __name__ == '__main__':
     _train_loader, _test_loader = get_dataloader(dataset, args.batch_size, args.train_prop)
 
     # Select configuration
-    _model = create_AlexNet(num_classes, args.model_size).to(args.device)
+    _MODEL = create_alexnet(num_classes, args.model_size).to(args.device)
 
     _criterion = nn.CrossEntropyLoss()
-    _optimizer = getattr(torch.optim, args.optimizer)(_model.parameters(), lr=args.lr)
+    _optimizer = getattr(torch.optim, args.optimizer)(_MODEL.parameters(), lr=args.lr)
 
     # Determining some extra parameters
     args.train_samples = int(args.train_prop * len(dataset))
     args.test_samples = len(dataset) - args.train_samples
-    args.n_params = _model.n_params
+    args.n_params = _MODEL.n_params
 
     # Initialize logger
     _logger = WandbLogger(config=args, mode=args.wandb_mode)
@@ -164,10 +164,10 @@ if __name__ == '__main__':
     complete_save_path = f"{args.save_path}/{args.model_size}"
     pathlib.Path(complete_save_path).mkdir(parents=True, exist_ok=True)
 
-    print(f"Training {args.model_size} with {_model.n_params} parameters")
+    print(f"Training {args.model_size} with {_MODEL.n_params} parameters")
 
     train(
-        model = _model,
+        model = _MODEL,
         train_loader = _train_loader,
         test_loader = _test_loader,
         optimizer = _optimizer,
