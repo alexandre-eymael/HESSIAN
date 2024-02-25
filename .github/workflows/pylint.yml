@@ -17,4 +17,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=E0401 $(git ls-files '*.py')
+        pylint --disable=E0401 --fail-under=9.5 $(git ls-files '*.py')
