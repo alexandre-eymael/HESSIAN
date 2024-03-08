@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dashboard with Bootstrap and Chart.js</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            /* Custom CSS for fixing card size */
+            .card-fixed {
+                height: 100%; /* Example fixed height */
+                width: 100%; /* Use 100% width within the column width */
+            }
+            .card-body {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between; /* Helps distribute space inside the card */
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container mt-5">
+        <div class="row">
+                <!-- Use the custom class "card-fixed" to ensure equal width and height -->
+            <div class="col-md-6">
+                <div class="card card-fixed">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Hardware Usage</h5>
+                        <h3>CPU Usage: {{cpu_usage}}%</h3>
+                        <h3>RAM Usage: {{ram_usage}}%</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-fixed">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">API Latency (MS)</h5>
+                        <h1>{{api_latency}}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-fixed">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of API calls per day</h5>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-fixed">
+                    <div class="card-body">
+                        <h5 class="card-title">Most Popular Model Sizes</h5>
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    var ctxLine = document.getElementById('lineChart').getContext('2d');
+    var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+
+    let model_dates = {{model_dates|tojson}};
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: Object.keys(model_dates),
+            datasets: [{
+                label: 'Number of API calls',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: Object.values(model_dates)
+            }]
+        },
+        options: {}
+    });
+
+    let model_usage = {{model_usage|tojson}};
+    new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(model_usage),
+            datasets: [{
+                label: 'Model Size',
+                backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
+                data: Object.values(model_usage)
+            }]
+        },
+        options: {}
+    });
+});
+</script>
+</body>
+</html>

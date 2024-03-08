@@ -17,5 +17,6 @@ CREATE TABLE models (
 CREATE TABLE queries (
     query_id INT PRIMARY KEY,
     user_id INT REFERENCES users(user_id),
-    model_id INT REFERENCES models(model_id)
+    model_id INT REFERENCES models(model_id),
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
