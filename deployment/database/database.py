@@ -110,6 +110,22 @@ class HessianDatabase:
                             (user_id, model_id))
         self.conn.commit()
 
+    def get_all_queries(self):
+        """
+        Get all the queries from the database.
+
+        Returns:
+            list: The queries in the database.
+        """
+        query = """
+        SELECT q.query_id, q.creation_date, m.model_name
+        FROM queries q
+        JOIN models m ON q.model_id = m.model_id
+        ORDER BY q.creation_date
+        """
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
     def get_queries(self, api_key):
         """
         Get the queries linked to the user whose API key is `api_key`.

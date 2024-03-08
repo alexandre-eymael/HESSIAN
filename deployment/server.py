@@ -11,6 +11,12 @@ from waitress import serve
 from .utils import parse_uploaded_image
 from .database.database import HessianDatabase
 from models.inference import load_model, predict_image
+import requests
+import time
+from collections import Counter, OrderedDict
+import datetime
+import psutil
+import os
 
 ###### Web Server & Preprocessing
 
@@ -40,6 +46,8 @@ inference_models = {str(model_id) : load_model(model_name) for model_id, model_n
 # Start Webserver
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['JSON_SORT_KEYS'] = False
+app.json.sort_keys = False
 
 ###### API
 def _inference(image, model_id):
@@ -206,6 +214,46 @@ def results():
         predictions = predictions,
         healthy_prob = healthy_prob,
         sick_prob = sick_prob
+    )
+
+# Dashboard frontend
+@app.route("/dashboard")
+def dashboard():
+
+    def _ping():
+        # Measure API latency
+        now = time.time()
+        response = requests.get(f"http://{HOST}:{PORT}/api")
+        latency = round((time.time() - now) * 1000, 2)
+        if response.status_code != 200:
+            return float("inf")
+        return latency
+
+    def _parse_query_dates(queries):
+        dates = OrderedDict()
+        for _, date_str, _ in queries:
+            dt_format = "%Y-%m-%d %H:%M:%S"
+            dt_datetime = datetime.datetime.strptime(date_str, dt_format)
+            dates[dt_datetime.strftime("%d/%m/%Y")] = dates.get(dt_datetime.strftime("%d/%m/%Y"), 0) + 1 
+        return dates
+
+    # LATENCY
+    latency = _ping()
+    # QUERIES
+    queries = db.get_all_queries()
+    model_usage = Counter(model_name for _, _, model_name in queries)
+    model_dates = _parse_query_dates(queries)
+    # CPU/RAM usage
+    cpu_usage = psutil.cpu_percent()
+    ram_usage = psutil.virtual_memory()[2]
+
+    return render_template(
+        "dashboard.html",
+        api_latency = latency,
+        model_usage = model_usage,
+        model_dates = model_dates,
+        cpu_usage = cpu_usage,
+        ram_usage = ram_usage
     )
 
 ## Serve
