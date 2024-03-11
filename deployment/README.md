@@ -80,6 +80,14 @@ The result is a JSON summarizing your usage of HESSIAN for all models that you h
 ### Database
 We store requests made by our users, as well as all the models that are available. The database uses SQL and its implementation can be used in the `database/` and `storage/` subdirectories.
 
+## Dashboard
+In order to provide some insights about our API usage and health, we developed a dashboard for HESSIAN. Our dashboard is accessible at <a href="http://hessian.be/dashboard">http://hessian.be/dashboard</a> and contains:
+
+- The hardware usage of our server (CPU and RAM)
+- The API latency in MS
+- The number of calls that the API received each day
+- An overview of the usage of each model size
+
 ## API Frontend
 We provide a convenient way to our users to interact with our API in a human-friendly manner. It is described in this section. The implementation of the frontend can be found in `templates/`.
 

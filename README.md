@@ -38,7 +38,7 @@ We provide a table detailing all the features implemented in this project, along
 |    **4.2**    | Run your model training in the cloud |     ❌     |       ✅      |                      <a href="./deployment_train"> deployment_train/ </a>                                                              |
 |    **4.3**    |          Automated Pipeline          |     ❌     |       ❌      |                                                                                   |
 |       -       |                   -                  |     -     |       -      |                                         -                                         |
-| **5.1**       | Dashboard                            | ❌         | ❌            |                                                                                   |
+| **5.1**       | Dashboard                            | ❌         | ✅            |                  <a href="./deployment"> deployment/ </a>                                                |
 | **5.2**       | CICD                                 | ✅         | ✅            |                      <a href="./.github/workflows"> .github/workflows/ </a>                                                            |
 | **5.3**       | CICD: Model Training                 | ❌         | ✅            |                      <a href="./.github/workflows/training.yml"> .github/workflows/training.yml </a>                                                             |
 | **5.4**       | CICD: Model Deployment               | ❌         | ✅            |                      <a href="./.github/workflows/deploy.yml"> .github/workflows/deploy.yml </a>                                                             |
