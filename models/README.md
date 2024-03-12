@@ -2,6 +2,10 @@
 
 This document offers an overview of the model architectures we have utilized, along with the checkpoints for each. Every checkpoint is designed to meet varying computational demands and accuracy expectations.
 
+## Training Monitoring
+
+We used [Weights & Biases](https://wandb.ai/) to monitor our training sessions. A training report summarizing the training of all of our models is available here: https://api.wandb.ai/links/lba_mlops/qas5kiru.
+
 ## Architecture
 
 All our models draw inspiration from the AlexNet architecture [[1]](#1). Their implementations are available in the `AlexNet.py` file. The training script that was used can be found in `train.py`. Finally, `inference.py` contains the code used to make predictions with our models.
