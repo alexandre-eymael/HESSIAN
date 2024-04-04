@@ -1,15 +1,36 @@
 name: training
 
-on:
-  push:
-    branches: [ "train-my-model" ]
+on: push
 
 jobs:
-  deploy:
+  check_commit:
     runs-on: ubuntu-latest
+    outputs:
+      match: ${{ steps.commit-message-check.outputs.match }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
+      - name: Check Commit Message
+        id: commit-message-check
+        run: |
+          commit_message=$(git log -1 --pretty=%B)
+          echo "Commit message: $commit_message"
+          if [[ "$commit_message" == *"!train-my-model!"* ]]; then
+            echo "::set-output name=match::true"
+            echo "Training requested, proceeding to train the model."
+          else
+            echo "::set-output name=match::false"
+            echo "No training requested, skipping training process."
+          fi
+
+  deploy:
+    needs: check_commit
+    if: needs.check_commit.outputs.match == 'true'
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: connect to VPS and train the model
         uses: appleboy/ssh-action@master
         with:
