@@ -45,5 +45,10 @@ We provide a table detailing all the features implemented in this project, along
 | **5.5**       | CICD: Pylint                         | ❌         | ✅            |                      <a href="./.github/workflows/pylint.yml"> .github/workflows/pylint.yml </a>                                                            |
 | **5.6**       | CICD: Pytest                         | ❌         | ✅            |                      <a href="./.github/workflows/pytest.yml"> .github/workflows/pytest.yml </a>                                                             |
 
+## 🌿 Gitflow Principles 
+During the development of this project, we strictly adhered to Gitflow principles to maintain a structured and efficient workflow. Our main branch served as the repository's official release history, containing stable and approved code. Whenever we initiated work on a new feature, we created a dedicated branch branching off from the main branch. This allowed us to isolate development efforts and maintain a clean codebase.
+
+Once a feature was fully developed and thoroughly tested, we initiated a pull request to merge the feature branch into the master branch. This integration process ensured that only completed and validated features were merged into the main branch, thereby preserving the stability and integrity of our codebase. By following this approach, we maintained a systematic and organized development cycle, enabling seamless collaboration among team members and facilitating the management of feature implementations. 
+
 ## 📃 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
