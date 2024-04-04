@@ -17,12 +17,13 @@ jobs:
           commit_message=$(git log -1 --pretty=%B)
           echo "Commit message: $commit_message"
           if [[ "$commit_message" == *"!train-my-model!"* ]]; then
-            echo "::set-output name=match::true"
+            echo "match=true" >> $GITHUB_OUTPUT
             echo "Training requested, proceeding to train the model."
           else
-            echo "::set-output name=match::false"
+            echo "match=false" >> $GITHUB_OUTPUT
             echo "No training requested, skipping training process."
           fi
+      
 
   deploy:
     needs: check_commit
