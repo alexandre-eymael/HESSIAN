@@ -48,9 +48,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements/gcloud_requirements.txt
 
-      - name: Train the model on Vertex AI
+      # - name: Train the model on Vertex AI
+      #   run: |
+      #     cd deployment_train
+      #     bash start_vertex_training.sh
+
+      - name: Deploy the model to Vertex AI
         run: |
           cd deployment_train
-          bash start_vertex_training.sh
+          python update_models.py {"epoch": 1, "model_size": small, "path": weights}
 
 

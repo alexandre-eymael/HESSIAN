@@ -110,7 +110,7 @@ class AlexNet(nn.Module):
         """
         return sum(p.numel() for p in self.parameters() if p.requires_grad)
 
-    def save_model(self, epoch, optimizer, loss, path):
+    def save_model(self, epoch, optimizer, metrics, path):
         """
         Save model checkpoint.
 
@@ -125,7 +125,7 @@ class AlexNet(nn.Module):
             'epoch': epoch,
             'model_state_dict': self.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
-            'loss': loss,
+            'metrics': metrics
         }, path)
 
     def load_model(self, path, device=None):
@@ -144,7 +144,7 @@ class AlexNet(nn.Module):
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         checkpoint = torch.load(path, map_location=device)
         self.load_state_dict(checkpoint['model_state_dict'])
-        return checkpoint['epoch'], checkpoint['optimizer_state_dict'], checkpoint['loss']
+        return checkpoint['epoch'], checkpoint['optimizer_state_dict'], checkpoint['metrics']
 
 def alexnet_small(num_classes):
     """
