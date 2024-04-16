@@ -37,8 +37,8 @@ jobs:
 
       - id: 'train'
         name: 'Train the model on Vertex AI'
+        working-directory: './deployment_train'
         run: |
-          cd deployment_train
           bash start_vertex_training.sh
 
 
