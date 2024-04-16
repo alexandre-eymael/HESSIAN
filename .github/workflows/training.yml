@@ -29,21 +29,17 @@ jobs:
     if: needs.check_commit.outputs.match == 'true'
     runs-on: ubuntu-latest
     steps:
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v0.4.0'
-        with:
-          credentials_json: '${{ secrets.GCP_SERVICE_JSON }}'
+      - name: Checkout
+        uses: actions/checkout@v3  # Ensure the checkout step is here to pull code for training
 
-      - id: 'train'
-        name: 'Train the model on Vertex AI'
-        # Echo current directory
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_JSON }}
+
+      - name: Train the model on Vertex AI
         run: |
-          echo "Current directory: $(pwd)"
-          cd ..
-          echo "Parent directory: $(pwd)"
-          echo "Listing files in parent directory:"
-          ls -la
-          
+          cd deployment_train
+          bash start_vertex_training.sh
 
 
