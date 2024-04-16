@@ -39,16 +39,12 @@ job = aiplatform.CustomPythonPackageTrainingJob(
     location=LOCATION
 )
 
-EPOCHS = 1
-MODEL_SIZE = "small"
-PATH = "weights"
-
 # define training code arguments
 training_args = [
     "--data_path", "https://www.kaggle.com/datasets/nirmalsankalana/plant-diseases-training-dataset/data",
-    "--model_size", f"{MODEL_SIZE}",
+    "--model_size", "small",
     "--save_freq", "1",
-    "--epochs", f"{EPOCHS}",
+    "--epochs", "1",
     "--lr", "3e-4",
     "--train_prop", "0.8",
     "--device", "cpu",
@@ -56,7 +52,7 @@ training_args = [
     "--batch_size", "64",
     "--wandb_mode", "online",
     "--optimizer", "AdamW",
-    "--save_path", f"{PATH}",
+    "--save_path", "weights",
     "--seed", "42",
     "--vertex_ai" # add this flag to indicate that the training is running on Vertex AI to retrieve gcloud secrets
 ]
@@ -71,8 +67,3 @@ job.run(
     sync=True,
     service_account="hessian@hessian-419310.iam.gserviceaccount.com"
 )
-
-# Output
-import json
-output_dict = {"epoch": EPOCHS, "model_size": MODEL_SIZE, "path": PATH, "job_name": JOB_NAME}
-print(json.dumps(output_dict))
