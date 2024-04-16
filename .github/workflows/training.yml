@@ -37,8 +37,9 @@ jobs:
 
       - id: 'train'
         name: 'Train the model on Vertex AI'
-        working-directory: './deployment_train'
+        # Echo current directory
         run: |
-          bash start_vertex_training.sh
+          echo "Current directory: $(pwd)"
+          echo "Listing files in the current directory: $(ls)"
 
 
