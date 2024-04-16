@@ -15,8 +15,8 @@ if __name__ == "__main__":
     model_size = parsed_dict["model_size"]
     path = parsed_dict["path"]
 
-    remote_path = f"{path}/model_epoch_{epoch}.pt"
+    remote_path = f"{path}/{model_size}/model_epoch_{epoch}.pt"
     # -- END ARGS
 
     # Start the comparison
-    os.system(f"python3 compare_chkpts.py --size {model_size} --remote_checkpoint {remote_path} --verbose")
+    os.system(f"python3 -m deployment_train.compare_chkpts --size {model_size} --remote_checkpoint {remote_path} --verbose")

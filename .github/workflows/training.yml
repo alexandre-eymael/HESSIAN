@@ -55,7 +55,6 @@ jobs:
 
       - name: Deploy the model to Vertex AI
         run: |
-          cd deployment_train
-          python update_models.py {"epoch": 1, "model_size": "small", "path": "weights"}
+          python -m deployment_train.update_models '{"epoch": 1, "model_size": "small", "path": "weights"}'
 
 
