@@ -53,6 +53,11 @@ jobs:
       #     cd deployment_train
       #     bash start_vertex_training.sh
 
+      # output_dict=$(bash start_vertex_training.sh)
+      # echo "model_output=${output_dict}" >> $GITHUB_ENV
+      
+      # python -m deployment_train.update_models "${{ env.model_output }}"
+
       - name: Deploy the model to Vertex AI
         uses: appleboy/ssh-action@master
         with:
@@ -63,7 +68,7 @@ jobs:
             cd /${{ secrets.VPS_USER }}/HESSIAN
             git checkout .
             git pull origin vertex-ai-action
-            python -m deployment_train.update_models '{"epoch": 1, "model_size": "small", "path": "weights"}'
+            python3 -m deployment_train.update_models '{"epoch": 1, "model_size": "small", "path": "weights"}'
             cd deployment
             bash deploy.sh
 
