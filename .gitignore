@@ -168,3 +168,5 @@ cython_debug/
 
 # Notes
 ideas.txt
+
+gha-creds-*.json
