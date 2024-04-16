@@ -59,6 +59,7 @@ def get_args_parser():
                         help="Device to use to train the model")
     parser.add_argument("--load_all_in_ram", action="store_true", help="Load all the data in RAM")
 
+    parser.add_argument("--vertex_ai", action="store_true", help="Whether training is currently running on Vertex AI")
     # Misc
     parser.add_argument("--wandb_mode", type=str, default="online",
                         choices=["disabled", "online", "offline"], help="Wandb mode")
