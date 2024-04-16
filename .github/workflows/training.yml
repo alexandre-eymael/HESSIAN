@@ -40,6 +40,10 @@ jobs:
         # Echo current directory
         run: |
           echo "Current directory: $(pwd)"
-          echo "Listing files in the current directory: $(ls)"
+          cd ..
+          echo "Parent directory: $(pwd)"
+          echo "Listing files in parent directory:"
+          ls -la
+          
 
 
