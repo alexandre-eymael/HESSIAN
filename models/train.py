@@ -8,6 +8,7 @@ Functions:
 
 """
 import time
+import os
 import pathlib
 from tqdm import tqdm
 import numpy as np
@@ -18,6 +19,7 @@ from .alexnet import create_alexnet
 from .args_train import get_args_parser
 from .data_loader import LeafDataset, get_dataloader
 from .wandb_logger import WandbLogger
+from .utils import parse_data_path, access_gcloud_secret, upload_model_gs
 
 HEALTHY_CLASSES = [4, 8, 9, 13, 15, 19, 23, 28, 31, 37, 42, 44, 46, 53]
 
@@ -123,8 +125,9 @@ def train(model, train_loader, test_loader, optimizer, criterion,
 
         # save model
         if (epoch+1) % save_freq == 0:
-            model.save_model(epoch=epoch, optimizer=optimizer, loss=metrics['train_loss'],
-                             path=f'{save_path}/model_epoch_{epoch+1}.pt')
+            ckpt = f"{save_path}/model_epoch_{epoch+1}.pt"
+            model.save_model(epoch=epoch, optimizer=optimizer, loss=metrics['train_loss'], path=ckpt)
+            upload_model_gs(model_path=ckpt)
 
 if __name__ == '__main__':
 
@@ -141,8 +144,13 @@ if __name__ == '__main__':
         transforms.Normalize(mean=[0.4557, 0.4969, 0.3778], std=[0.1991, 0.1820, 0.2096]),
     ])
 
+    # Load dataset
+    kaggle_username = access_gcloud_secret("KAGGLE_USERNAME") if args.vertex_ai else None
+    kaggle_key = access_gcloud_secret("KAGGLE_KEY") if args.vertex_ai else None
+    args.data_path = parse_data_path(args.data_path, kaggle_username=kaggle_username, kaggle_key=kaggle_key)
     dataset = LeafDataset(args.data_path, transform=transform,
                           load_all_in_memory=args.load_all_in_ram, max_samples=args.max_samples)
+    
     num_classes = dataset.get_nb_classes()
     _train_loader, _test_loader = get_dataloader(dataset, args.batch_size, args.train_prop)
 
@@ -158,7 +166,8 @@ if __name__ == '__main__':
     args.n_params = _MODEL.n_params
 
     # Initialize logger
-    _logger = WandbLogger(config=args, mode=args.wandb_mode)
+    wandb_key = access_gcloud_secret("WANDB_API_KEY") if args.vertex_ai else None
+    _logger = WandbLogger(config=args, mode=args.wandb_mode, login_key=wandb_key)
 
     # Create necessary directories
     complete_save_path = f"{args.save_path}/{args.model_size}"
@@ -176,7 +185,7 @@ if __name__ == '__main__':
         epochs = args.epochs,
         device = args.device,
         save_freq = args.save_freq,
-        save_path = complete_save_path
-    )
+        save_path = complete_save_path    
+        )
 
     _logger.finish()

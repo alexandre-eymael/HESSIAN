@@ -52,7 +52,7 @@ class WandbLogger:
             gradients and parameters updates.
         get_config(): Retrieves the configuration settings for the current experiment.
     """
-    def __init__(self, config, mode="online"):
+    def __init__(self, config, mode="online", login_key=None):
         """
         Initializes the WandbLogger with the specified configuration.
 
@@ -60,6 +60,8 @@ class WandbLogger:
             config (dict): Configuration parameters for the W&B run.
             mode (str, optional): Mode for the W&B run, either "online" or "offline".
         """
+        if login_key:
+            wandb.login(key=login_key)
         wandb.init(entity = "lba_mlops", project="mlops", config=config, mode=mode)
 
     def log(self, metrics):

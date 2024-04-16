@@ -1,4 +1,5 @@
 # Our ignore
+data/
 data/images/
 data/data.zip
 weights/
