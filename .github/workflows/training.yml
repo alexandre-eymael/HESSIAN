@@ -54,7 +54,17 @@ jobs:
       #     bash start_vertex_training.sh
 
       - name: Deploy the model to Vertex AI
-        run: |
-          python -m deployment_train.update_models '{"epoch": 1, "model_size": "small", "path": "weights"}'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd /${{ secrets.VPS_USER }}/HESSIAN
+            git checkout .
+            git pull origin vertex-ai-action
+            python -m deployment_train.update_models '{"epoch": 1, "model_size": "small", "path": "weights"}'
+            cd deployment
+            bash deploy.sh
 
 
