@@ -1,4 +1,6 @@
-# HESSIAN: Health Evaluation and Surveillance for Sylvan Infirmities using Advanced Neural networks
+# HESSIAN 🌳
+
+<img src=".github/images/schema.png" width=100%/>
 
 ## 💬 About the Project
 Welcome to **HESSIAN**, a pioneering initiative led by "The Foresters 🌲" team, dedicated to the health evaluation and surveillance of plant life using cutting-edge analytical networking techniques. Our mission is to leverage advanced algorithms and data analytics to detect, classify, and understand the health of leaves, ultimately contributing to the preservation and care of our vital forest ecosystems.

@@ -16,7 +16,7 @@ jobs:
         run: |
           commit_message=$(git log -1 --pretty=%B)
           echo "Commit message: $commit_message"
-          if [[ "$commit_message" == *"!train-my-model!"* ]]; then
+          if [[ "$commit_message" == *"!train-hessian!"* ]]; then
             echo "match=true" >> $GITHUB_OUTPUT
             echo "Training requested, proceeding to train the model."
           else
@@ -24,22 +24,33 @@ jobs:
             echo "No training requested, skipping training process."
           fi
   
-  deploy:
+  train_model:
     needs: check_commit
     if: needs.check_commit.outputs.match == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3  # Ensure the checkout step is here to pull code for training
 
-      - name: connect to VPS and train the model
-        uses: appleboy/ssh-action@master
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          script: |
-            cd /${{ secrets.VPS_USER }}/HESSIAN
-            git checkout .
-            git pull
-            cd deployment_train
-            bash deploy.sh
+          credentials_json: ${{ secrets.GCP_SERVICE_JSON }}
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+    
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/gcloud_requirements.txt
+
+      - name: Train the model on Vertex AI
+        run: |
+          cd deployment_train
+          bash start_vertex_training.sh
+
+

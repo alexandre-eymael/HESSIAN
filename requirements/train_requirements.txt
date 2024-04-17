@@ -1,0 +1,12 @@
+torch
+torchvision
+numpy
+pandas
+Pillow
+scikit-learn
+wandb
+tqdm
+datasets
+cloudml-hypertune
+kaggle
+google-cloud-secret-manager

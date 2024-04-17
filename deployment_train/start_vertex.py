@@ -52,12 +52,13 @@ training_args = [
     "--batch_size", "64",
     "--wandb_mode", "online",
     "--optimizer", "AdamW",
+    "--save_path", "weights",
     "--seed", "42",
     "--vertex_ai" # add this flag to indicate that the training is running on Vertex AI to retrieve gcloud secrets
 ]
 
-# submit the Custom Job to Vertex Training service
-model = job.run(
+# Submit the Custom Job to Vertex Training service
+job.run(
     replica_count=1,
     machine_type="n1-standard-8",
     #accelerator_type="NVIDIA_TESLA_P100",

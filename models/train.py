@@ -126,7 +126,7 @@ def train(model, train_loader, test_loader, optimizer, criterion,
         # save model
         if (epoch+1) % save_freq == 0:
             ckpt = f"{save_path}/model_epoch_{epoch+1}.pt"
-            model.save_model(epoch=epoch, optimizer=optimizer, loss=metrics['train_loss'], path=ckpt)
+            model.save_model(epoch=epoch, optimizer=optimizer, metrics=metrics, path=ckpt)
             upload_model_gs(model_path=ckpt)
 
 if __name__ == '__main__':

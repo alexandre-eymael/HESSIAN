@@ -53,7 +53,7 @@ def parse_data_path(raw_data_path, kaggle_username=None, kaggle_key=None):
     raise ValueError("Invalid data path")
 
 
-def upload_model_gs(model_path, bucket_name="hessian", prefix="models"):
+def upload_model_gs(model_path, bucket_name="hessian"):
 
     from google.cloud import storage
 
@@ -62,7 +62,7 @@ def upload_model_gs(model_path, bucket_name="hessian", prefix="models"):
     bucket = client.get_bucket(bucket_name)
 
     # Upload model
-    blob = bucket.blob(f"{prefix}/{model_path}")
+    blob = bucket.blob(model_path)
     blob.upload_from_filename(model_path)
 
-    return f"{bucket_name}/{prefix}/{model_path}"
+    return f"{bucket_name}/{model_path}"
