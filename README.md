@@ -1,4 +1,4 @@
-# HESSIAN: Health Evaluation and Surveillance for Sylvan Infirmities using Advanced Neural networks
+# HESSIAN
 
 <img src=".github/images/schema.png" width=100%/>
 
