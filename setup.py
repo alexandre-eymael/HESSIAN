@@ -1,8 +1,20 @@
 from setuptools import find_packages
 from setuptools import setup
-import pathlib
 
-REQUIRED_PACKAGES = pathlib.Path("requirements/train_requirements.txt").read_text().split("\n")
+REQUIRED_PACKAGES = [
+    "torch",
+    "torchvision",
+    "numpy",
+    "pandas",
+    "Pillow",
+    "scikit-learn",
+    "wandb",
+    "tqdm",
+    "datasets",
+    "cloudml-hypertune",
+    "kaggle",
+    "google-cloud-secret-manager"
+]
 
 setup(
     name='hessian_trainer',
