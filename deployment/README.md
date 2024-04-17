@@ -97,12 +97,12 @@ The following image shows the home page of <a href="http://hessian.be">hessian.b
 - You can upload the image for which you want to have predictions.
 - You can choose the desired model.
 
-![Home page overview](.github/images/home_page.png)
+![Home page overview](../.github/images/home_page.png)
 
 Finally, once the above is done, you can submit your request.
-![Home page overview with an example](.github/images/test_example.png)
+![Home page overview with an example](../.github/images/test_example.png)
 
 ### Results page
 After the submission, you will be redirected to the results page where you can see the resulting probabilities of the binary prediction, i.e., whether the leaf in the image is healthy or not, and you can also see a more advanced resulting probabilities for the 61 different classes.
 
-![Results page](.github/images/results.png)
+![Results page](../.github/images/results.png)
