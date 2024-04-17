@@ -1,4 +1,4 @@
-# HESSIAN
+# HESSIAN 🌳
 
 <img src=".github/images/schema.png" width=100%/>
 
