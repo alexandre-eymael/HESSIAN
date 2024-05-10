@@ -13,7 +13,7 @@ We decided to host our API on a VPS and to make it publicly available, you can a
 The API can be queried with an HTTP payload. Specifically, the header of the request should contain the API key in the `HESSIAN-API-Key` field. According to the request, the parameters and the body of the request are different. The `query_api.py` file proposes ready-to-use functions to query our API.
 
 ### ✉️ Inference Request
-To perform inference on an image, the request should contain the model type as parameters in the `model` field. Additionnaly, the image encoded in base64 as a raw string should be sent in the body of the request:
+To perform inference on an image, the request should contain the model type as parameters in the `model` field. Additionally, the image encoded in base64 as a raw string should be sent in the body of the request:
 
 ```python
 import requests
