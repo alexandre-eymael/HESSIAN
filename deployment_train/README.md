@@ -33,7 +33,7 @@ Our dataset is downloaded at the start of training. The URL of the training set 
 The [start_vertex.py](start_vertex.py) script starts the Vertex AI training. Specifically, it starts by creating a custom train image from the pre-built image and installs the `hessian_trainer` package inside it. Then, a `CustomPythonPackageTrainingJob` is created, and started with our training arguments (i.e., hyperparameters and hardware to use).
 
 ### 👁️ Monitoring the Training
-Similarly to the local training, we use Weights and Biases to monitor our training in the cloud. Specifically, we use **[Google Cloud Secret Manager](https://cloud.google.com/security/products/secret-manager)** to store and read our wandb API key so that it is never explicitely used in the code, which would be a security breach.
+Similarly to the local training, we use Weights and Biases to monitor our training in the cloud. Specifically, we use **[Google Cloud Secret Manager](https://cloud.google.com/security/products/secret-manager)** to store and read our wandb API key so that it is never explicitly used in the code, which would be a security breach.
 
 ### ⛳ Saving the Checkpoints
 Once training is finished, we upload the weights of our models to a Google Cloud Bucket.
